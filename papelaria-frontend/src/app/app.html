@@ -1,0 +1,11 @@
+<div class="topbar" *ngIf="authService.isAuthenticated()">
+  <a class="brand-tab" routerLink="/">
+    <span class="brand-dot"></span>
+    Início
+  </a>
+  <div class="top-right">
+    <span class="user-name">{{ authService.getUsuarioLogado()?.nome }}</span>
+    <button class="btn-sair" (click)="logout()">Sair</button>
+  </div>
+</div>
+<router-outlet></router-outlet>

@@ -1,0 +1,127 @@
+.hero {
+  text-align: center;
+  padding: 64px 20px 20px;
+}
+
+.hero h1 {
+  font-family: 'Fraunces', serif;
+  font-weight: 700;
+  font-size: clamp(2.4rem, 5vw, 3.4rem);
+  margin: 0;
+  letter-spacing: -0.01em;
+}
+
+.hero-underline {
+  display: block;
+  margin: 6px auto 18px;
+}
+
+.hero p {
+  font-size: 16px;
+  color: var(--ink-soft);
+  margin: 0;
+}
+
+.grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 26px;
+  max-width: 1000px;
+  margin: 44px auto 80px;
+  padding: 0 24px;
+}
+
+.card {
+  position: relative;
+  width: 270px;
+  background: var(--card);
+  border: 1.5px dashed #D9CBA8;
+  border-radius: 10px;
+  padding: 30px 22px 24px;
+  text-align: center;
+  cursor: pointer;
+  text-decoration: none;
+  color: inherit;
+  transition: transform .22s ease, box-shadow .22s ease, border-color .22s ease;
+  box-shadow: 0 1px 0 var(--paper-line);
+}
+
+.card::before {
+  content: "";
+  position: absolute;
+  top: -9px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 16px;
+  height: 16px;
+  background: var(--paper);
+  border: 1.5px dashed #D9CBA8;
+  border-radius: 50%;
+}
+
+.card::after {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 5px;
+  border-radius: 10px 10px 0 0;
+  background: var(--accent);
+}
+
+.card:hover {
+  transform: translateY(-6px) rotate(-0.6deg);
+  box-shadow: 0 16px 30px -12px var(--shadow);
+  border-color: var(--accent);
+}
+
+.icon-wrap {
+  width: 52px;
+  height: 52px;
+  margin: 6px auto 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--accent) 14%, transparent);
+}
+
+.icon-wrap svg {
+  width: 26px;
+  height: 26px;
+  stroke: var(--accent);
+}
+
+.card h3 {
+  font-family: 'Fraunces', serif;
+  font-size: 19px;
+  font-weight: 600;
+  margin: 0 0 8px;
+  color: var(--ink);
+}
+
+.card p {
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--ink-soft);
+  margin: 0;
+}
+
+.c1 { --accent: var(--coral); }
+.c2 { --accent: var(--sky); }
+.c3 { --accent: var(--mustard); }
+.c4 { --accent: var(--plum); }
+.c5 { --accent: var(--teal); }
+
+footer {
+  text-align: center;
+  padding-bottom: 36px;
+  font-size: 12px;
+  color: var(--ink-soft);
+  opacity: .7;
+}
+
+@media (max-width: 520px) {
+  .hero { padding-top: 48px; }
+  .card { width: 100%; max-width: 320px; }
+}

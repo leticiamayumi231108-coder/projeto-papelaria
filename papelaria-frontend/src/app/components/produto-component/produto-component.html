@@ -1,0 +1,101 @@
+<div class="container">
+  <h2>{{ editandoId ? 'Editar' : 'Novo' }} Produto</h2>
+
+  <div *ngIf="erro" class="erro">
+    <span>{{ erro }}</span>
+    <button type="button" class="fechar-erro" (click)="fecharErro()">&times;</button>
+  </div>
+
+  <form [formGroup]="form" (ngSubmit)="salvar()" class="form-produto">
+    <label>
+      Nome:
+      <input formControlName="nomeProduto" placeholder="Nome do produto" />
+      <span *ngIf="form.get('nomeProduto')?.invalid && form.get('nomeProduto')?.touched" class="campo-invalido">
+        Nome deve ter pelo menos 3 caracteres
+      </span>
+    </label>
+
+    <label>
+      Descrição:
+      <textarea formControlName="descricao" placeholder="Descrição do produto" rows="3"></textarea>
+    </label>
+
+    <label>
+      Categoria:
+      <select formControlName="idCategoriaProduto">
+        <option value="" disabled>Selecione uma categoria</option>
+        <option *ngFor="let c of categorias" [value]="c.idCategoriaProduto">{{ c.nomeCategoria }}</option>
+      </select>
+      <span *ngIf="form.get('idCategoriaProduto')?.invalid && form.get('idCategoriaProduto')?.touched" class="campo-invalido">
+        Categoria é obrigatória
+      </span>
+    </label>
+
+    <div class="campos-linha">
+      <label>
+        Preço (R$):
+        <input formControlName="preco" appMask="preco" type="text" placeholder="0,00" />
+        <span *ngIf="form.get('preco')?.invalid && form.get('preco')?.touched" class="campo-invalido">
+          Preço deve ser maior que zero
+        </span>
+      </label>
+
+      <label>
+        Estoque:
+        <input formControlName="estoque" type="number" min="0" placeholder="0" />
+        <span *ngIf="form.get('estoque')?.invalid && form.get('estoque')?.touched" class="campo-invalido">
+          Estoque deve ser zero ou positivo
+        </span>
+      </label>
+    </div>
+
+    <label>
+      Data de Validade:
+      <input formControlName="dataValidade" type="date" />
+    </label>
+
+    <div class="acoes">
+      <button type="submit" [disabled]="form.invalid">
+        {{ editandoId ? 'Atualizar' : 'Cadastrar' }}
+      </button>
+      <button type="button" *ngIf="editandoId" (click)="cancelarEdicao()">Cancelar</button>
+      <button type="button" class="btn-voltar" routerLink="/">Voltar</button>
+    </div>
+  </form>
+
+  <h2>Produtos Cadastrados</h2>
+
+  <table *ngIf="produtos.length > 0; else semProdutos">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Nome</th>
+        <th>Descrição</th>
+        <th>Categoria</th>
+        <th>Preço</th>
+        <th>Estoque</th>
+        <th>Validade</th>
+        <th>Ações</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let p of produtos">
+        <td>{{ p.idProduto }}</td>
+        <td>{{ p.nomeProduto }}</td>
+        <td>{{ p.descricao }}</td>
+        <td>{{ p.nomeCategoria }}</td>
+        <td>{{ p.preco | currency:'BRL' }}</td>
+        <td>{{ p.estoque }}</td>
+        <td>{{ p.dataValidade ? (p.dataValidade | date:'shortDate') : '-' }}</td>
+        <td>
+          <button (click)="editar(p)">Editar</button>
+          <button (click)="excluir(p.idProduto)" class="excluir">Excluir</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <ng-template #semProdutos>
+    <p class="vazio">Nenhum produto cadastrado.</p>
+  </ng-template>
+</div>

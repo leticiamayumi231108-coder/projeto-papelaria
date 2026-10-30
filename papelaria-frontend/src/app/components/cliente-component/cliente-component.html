@@ -1,0 +1,79 @@
+<div class="container">
+  <h2>{{ editandoId ? 'Editar' : 'Novo' }} Cliente</h2>
+
+  <p *ngIf="erro" class="erro">{{ erro }}</p>
+
+  <form [formGroup]="form" (ngSubmit)="salvar()" class="form-cliente">
+    <label>
+      Nome:
+      <input formControlName="nome" placeholder="Nome completo" />
+      <span *ngIf="form.get('nome')?.invalid && form.get('nome')?.touched" class="campo-invalido">
+        Nome deve ter pelo menos 3 caracteres
+      </span>
+    </label>
+
+    <label>
+      CPF:
+      <input formControlName="cpf" appMask="cpf" placeholder="000.000.000-00" maxlength="14" />
+      <span *ngIf="form.get('cpf')?.invalid && form.get('cpf')?.touched" class="campo-invalido">
+        CPF deve conter 11 dígitos
+      </span>
+    </label>
+
+    <label>
+      Telefone:
+      <input formControlName="telefone" appMask="telefone" placeholder="(99) 99999-9999" maxlength="15" />
+      <span *ngIf="form.get('telefone')?.invalid && form.get('telefone')?.touched" class="campo-invalido">
+        Telefone é obrigatório
+      </span>
+    </label>
+
+    <label>
+      E-mail:
+      <input formControlName="email" type="email" placeholder="email@exemplo.com" />
+      <span *ngIf="form.get('email')?.invalid && form.get('email')?.touched" class="campo-invalido">
+        E-mail inválido
+      </span>
+    </label>
+
+    <div class="acoes">
+      <button type="submit" [disabled]="form.invalid">
+        {{ editandoId ? 'Atualizar' : 'Cadastrar' }}
+      </button>
+      <button type="button" *ngIf="editandoId" (click)="cancelarEdicao()">Cancelar</button>
+      <button type="button" class="btn-voltar" routerLink="/">Voltar</button>
+    </div>
+  </form>
+
+  <h2>Clientes Cadastrados</h2>
+
+  <table *ngIf="clientes.length > 0; else semClientes">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Nome</th>
+        <th>CPF</th>
+        <th>Telefone</th>
+        <th>E-mail</th>
+        <th>Ações</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let c of clientes">
+        <td>{{ c.idCliente }}</td>
+        <td>{{ c.nome }}</td>
+        <td>{{ c.cpf }}</td>
+        <td>{{ c.telefone }}</td>
+        <td>{{ c.email }}</td>
+        <td>
+          <button (click)="editar(c)">Editar</button>
+          <button (click)="excluir(c.idCliente)" class="excluir">Excluir</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <ng-template #semClientes>
+    <p class="vazio">Nenhum cliente cadastrado.</p>
+  </ng-template>
+</div>

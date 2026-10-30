@@ -1,0 +1,84 @@
+<div class="container">
+  <h2>{{ editandoId ? 'Editar' : 'Novo' }} Usuário</h2>
+
+  <div *ngIf="erro" class="erro">
+    <span>{{ erro }}</span>
+    <button type="button" class="fechar-erro" (click)="fecharErro()">&times;</button>
+  </div>
+
+  <form [formGroup]="form" (ngSubmit)="salvar()" class="form-usuario">
+    <label>
+      Nome:
+      <input formControlName="nome" placeholder="Nome completo" />
+      <span *ngIf="form.get('nome')?.invalid && form.get('nome')?.touched" class="campo-invalido">
+        Nome deve ter pelo menos 3 caracteres
+      </span>
+    </label>
+
+    <label>
+      E-mail:
+      <input formControlName="email" type="email" placeholder="email@exemplo.com" />
+      <span *ngIf="form.get('email')?.invalid && form.get('email')?.touched" class="campo-invalido">
+        E-mail inválido
+      </span>
+    </label>
+
+    <label>
+      Senha:
+      <input formControlName="senha" type="password" placeholder="{{ editandoId ? 'Deixe em branco para manter' : 'Senha' }}" />
+      <span *ngIf="form.get('senha')?.invalid && form.get('senha')?.touched" class="campo-invalido">
+        Senha é obrigatória
+      </span>
+    </label>
+
+    <label>
+      Nível de Acesso:
+      <select formControlName="acesso">
+        <option value="" disabled>Selecione o nível</option>
+        <option value="ADMINISTRADOR">Administrador</option>
+        <option value="FUNCIONARIO">Funcionário</option>
+      </select>
+      <span *ngIf="form.get('acesso')?.invalid && form.get('acesso')?.touched" class="campo-invalido">
+        Nível de acesso é obrigatório
+      </span>
+    </label>
+
+    <div class="acoes">
+      <button type="submit" [disabled]="form.invalid">
+        {{ editandoId ? 'Atualizar' : 'Cadastrar' }}
+      </button>
+      <button type="button" *ngIf="editandoId" (click)="cancelarEdicao()">Cancelar</button>
+      <button type="button" class="btn-voltar" routerLink="/">Voltar</button>
+    </div>
+  </form>
+
+  <h2>Usuários Cadastrados</h2>
+
+  <table *ngIf="usuarios.length > 0; else semUsuarios">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Nome</th>
+        <th>E-mail</th>
+        <th>Perfil de Acesso</th>
+        <th>Ações</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let u of usuarios">
+        <td>{{ u.idUsuario }}</td>
+        <td>{{ u.nome }}</td>
+        <td>{{ u.email }}</td>
+        <td>{{ u.acesso === 'ADMINISTRADOR' ? 'Administrador' : 'Funcionário' }}</td>
+        <td>
+          <button (click)="editar(u)">Editar</button>
+          <button (click)="excluir(u.idUsuario)" class="excluir">Excluir</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <ng-template #semUsuarios>
+    <p class="vazio">Nenhum usuário cadastrado.</p>
+  </ng-template>
+</div>

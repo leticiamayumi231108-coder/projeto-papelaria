@@ -1,0 +1,82 @@
+<div class="container">
+  <h2>{{ editandoId ? 'Editar' : 'Novo' }} Fornecedor</h2>
+
+  <div *ngIf="erro" class="erro">
+    <span>{{ erro }}</span>
+    <button type="button" class="fechar-erro" (click)="fecharErro()">&times;</button>
+  </div>
+
+  <form [formGroup]="form" (ngSubmit)="salvar()" class="form-fornecedor">
+    <label>
+      Nome:
+      <input formControlName="nomeFornecedor" placeholder="Nome do fornecedor" />
+      <span *ngIf="form.get('nomeFornecedor')?.invalid && form.get('nomeFornecedor')?.touched" class="campo-invalido">
+        Nome deve ter pelo menos 3 caracteres
+      </span>
+    </label>
+
+    <label>
+      CNPJ:
+      <input formControlName="cnpj" appMask="cnpj" placeholder="00.000.000/0000-00" maxlength="18" />
+      <span *ngIf="form.get('cnpj')?.invalid && form.get('cnpj')?.touched" class="campo-invalido">
+        CNPJ deve conter 14 dígitos
+      </span>
+    </label>
+
+    <label>
+      Telefone:
+      <input formControlName="telefoneFornecedor" appMask="telefone" placeholder="(99) 99999-9999" maxlength="15" />
+      <span *ngIf="form.get('telefoneFornecedor')?.invalid && form.get('telefoneFornecedor')?.touched" class="campo-invalido">
+        Telefone é obrigatório
+      </span>
+    </label>
+
+    <label>
+      E-mail:
+      <input formControlName="emailFornecedor" type="email" placeholder="email@exemplo.com" />
+      <span *ngIf="form.get('emailFornecedor')?.invalid && form.get('emailFornecedor')?.touched" class="campo-invalido">
+        E-mail inválido
+      </span>
+    </label>
+
+    <div class="acoes">
+      <button type="submit" [disabled]="form.invalid">
+        {{ editandoId ? 'Atualizar' : 'Cadastrar' }}
+      </button>
+      <button type="button" *ngIf="editandoId" (click)="cancelarEdicao()">Cancelar</button>
+      <button type="button" class="btn-voltar" routerLink="/">Voltar</button>
+    </div>
+  </form>
+
+  <h2>Fornecedores Cadastrados</h2>
+
+  <table *ngIf="fornecedores.length > 0; else semFornecedores">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Nome</th>
+        <th>CNPJ</th>
+        <th>Telefone</th>
+        <th>E-mail</th>
+        <th>Ações</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let f of fornecedores">
+        <td>{{ f.idFornecedor }}</td>
+        <td>{{ f.nomeFornecedor }}</td>
+        <td>{{ f.cnpj }}</td>
+        <td>{{ f.telefoneFornecedor }}</td>
+        <td>{{ f.emailFornecedor }}</td>
+        <td>
+          <button (click)="editar(f)">Editar</button>
+          <button (click)="excluir(f.idFornecedor)" class="excluir">Excluir</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <ng-template #semFornecedores>
+    <p class="vazio">Nenhum fornecedor cadastrado.</p>
+  </ng-template>
+</div>

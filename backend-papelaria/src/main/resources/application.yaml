@@ -1,0 +1,29 @@
+
+server:
+  servlet:
+    context-path: /
+  port: 8080
+
+spring:
+  application:
+    name: papelaria
+
+
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+    open-in-view: false
+    properties:
+      hibernate.jdbc.time_zone: America/Sao_Paulo
+  datasource:
+    url: jdbc:postgresql://localhost:5432/papelaria
+    username: postgres
+    password: postgres
+    driver-class-name: org.postgresql.Driver
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info

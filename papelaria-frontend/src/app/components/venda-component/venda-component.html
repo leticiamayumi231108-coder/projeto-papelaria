@@ -1,0 +1,121 @@
+<div class="container">
+  <h2>{{ editandoId ? 'Editar' : 'Nova' }} Venda</h2>
+
+  <div *ngIf="erro" class="erro">
+    <span>{{ erro }}</span>
+    <button type="button" class="fechar-erro" (click)="fecharErro()">&times;</button>
+  </div>
+
+  <form [formGroup]="form" class="form-venda">
+    <div class="campos-linha">
+      <label>
+        Cliente:
+        <select formControlName="idCliente">
+          <option value="" disabled>Selecione um cliente</option>
+          <option *ngFor="let c of clientes" [value]="c.idCliente">{{ c.nome }}</option>
+        </select>
+        <span *ngIf="form.get('idCliente')?.invalid && form.get('idCliente')?.touched" class="campo-invalido">
+          Cliente é obrigatório
+        </span>
+      </label>
+
+      <label>
+        Forma de Pagamento:
+        <select formControlName="formaPagamento">
+          <option value="" disabled>Selecione</option>
+          <option *ngFor="let f of formasPagamento" [value]="f.valor">{{ f.rotulo }}</option>
+        </select>
+        <span *ngIf="form.get('formaPagamento')?.invalid && form.get('formaPagamento')?.touched" class="campo-invalido">
+          Forma de pagamento é obrigatória
+        </span>
+      </label>
+    </div>
+  </form>
+
+  <h3>Itens da Venda</h3>
+
+  <div class="itens">
+    <div *ngFor="let item of itensForm; let i = index" class="item-row">
+      <label>
+        Produto:
+        <select [value]="item.idProduto" (change)="onProdutoSelect(i, $any($event.target).value)">
+          <option value="0" disabled>Selecione</option>
+          <option *ngFor="let p of produtos" [value]="p.idProduto" [disabled]="p.estoque === 0">
+            {{ p.nomeProduto }} (estoque: {{ p.estoque }})
+          </option>
+        </select>
+      </label>
+
+      <label>
+        Qtd:
+        <input type="number" min="1" [value]="item.quantidade"
+               (change)="onQuantidadeChange(i, $any($event.target).value)"
+               [class.erro-input]="item.erroEstoque" />
+      </label>
+
+      <span *ngIf="item.erroEstoque" class="erro-item">{{ item.erroEstoque }}</span>
+
+      <label class="campo-preco">
+        Preço Unit:
+        <span>{{ item.precoUnitario ? ('R$ ' + (item.precoUnitario | currency:'BRL')).replace('R$ ', '') : '-' }}</span>
+      </label>
+
+      <label class="campo-preco">
+        Subtotal:
+        <span class="subtotal">R$ {{ ((item.precoUnitario || 0) * item.quantidade).toFixed(2) }}</span>
+      </label>
+
+      <button type="button" class="btn-remover" (click)="removerItem(i)">&times;</button>
+    </div>
+
+    <button type="button" class="btn-add-item" (click)="adicionarItem()">+ Adicionar Item</button>
+  </div>
+
+  <div class="total-geral">
+    <strong>Total: R$ {{ totalVenda.toFixed(2) }}</strong>
+  </div>
+
+  <div class="acoes">
+    <button type="button" (click)="salvar()" [disabled]="form.invalid || itensForm.length === 0 || temErroEstoque">
+      {{ editandoId ? 'Atualizar' : 'Finalizar Venda' }}
+    </button>
+    <button type="button" *ngIf="editandoId" (click)="cancelarEdicao()">Cancelar</button>
+    <button type="button" class="btn-voltar" routerLink="/">Voltar</button>
+  </div>
+
+  <hr />
+
+  <h2>Vendas Realizadas</h2>
+
+  <table *ngIf="vendas.length > 0; else semVendas">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Data</th>
+        <th>Cliente</th>
+        <th>Forma Pagamento</th>
+        <th>Total</th>
+        <th>Itens</th>
+        <th>Ações</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let v of vendas">
+        <td>{{ v.idVenda }}</td>
+        <td>{{ v.dataVenda ? (v.dataVenda | date:'shortDate') : '-' }}</td>
+        <td>{{ v.nomeCliente }}</td>
+        <td>{{ v.formaPagamento }}</td>
+        <td>{{ v.valorTotal | currency:'BRL' }}</td>
+        <td>{{ v.itens?.length || 0 }}</td>
+        <td>
+          <button (click)="editar(v)">Editar</button>
+          <button (click)="excluir(v.idVenda)" class="excluir">Excluir</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <ng-template #semVendas>
+    <p class="vazio">Nenhuma venda realizada.</p>
+  </ng-template>
+</div>

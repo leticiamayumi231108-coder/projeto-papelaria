@@ -1,0 +1,31 @@
+<div class="login-wrapper">
+  <div class="login-card">
+    <h1>Papelaria</h1>
+    <p class="subtitulo">Faça login para continuar</p>
+
+    <div *ngIf="erro" class="erro">
+      <span>{{ erro }}</span>
+      <button type="button" class="fechar-erro" (click)="erro = ''">&times;</button>
+    </div>
+
+    <form [formGroup]="form" (ngSubmit)="logar()">
+      <label>
+        E-mail:
+        <input type="email" formControlName="email" placeholder="seu@email.com" autocomplete="email" />
+        <span *ngIf="form.get('email')?.invalid && form.get('email')?.touched" class="campo-invalido">
+          Informe um e-mail válido
+        </span>
+      </label>
+
+      <label>
+        Senha:
+        <input type="password" formControlName="senha" placeholder="Sua senha" autocomplete="current-password" />
+        <span *ngIf="form.get('senha')?.invalid && form.get('senha')?.touched" class="campo-invalido">
+          Senha é obrigatória
+        </span>
+      </label>
+
+      <button type="submit" [disabled]="form.invalid">Entrar</button>
+    </form>
+  </div>
+</div>
