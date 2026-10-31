@@ -1,5 +1,5 @@
 export const environment = {
     production: true,
-    // URL do backend publicado no Render (confirmar após criar o serviço)
-    apiUrl: 'https://papelaria-backend.onrender.com'
+    // URL do backend publicado no Render
+    apiUrl: 'https://projeto-papelaria-gl4h.onrender.com'
 };
