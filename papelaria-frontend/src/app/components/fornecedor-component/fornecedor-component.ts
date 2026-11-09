@@ -73,7 +73,7 @@ export class FornecedorComponent implements OnInit {
     }
   }
 
-  editar(fornecedor: distribuidor): void {
+  editar(fornecedor: fornecedor): void {
     this.editandoId = fornecedor.idFornecedor ?? null;
     const rawCnpj = (fornecedor.cnpj || '').replace(/\D/g, '');
     const rawTel = (fornecedor.telefoneFornecedor || '').replace(/\D/g, '');
