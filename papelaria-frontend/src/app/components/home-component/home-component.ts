@@ -34,7 +34,7 @@ export class HomeComponent {
       svg: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="1"/><path d="M9 8h1M14 8h1M9 12h1M14 12h1M9 16h1M14 16h1"/></svg>'
     },
     {
-      titulo: 'Mercadorias',
+      titulo: 'Produtos',
       descricao: 'Cadastro e gerenciamento de produtos',
       rota: '/produtos',
       classe: 'c3',
